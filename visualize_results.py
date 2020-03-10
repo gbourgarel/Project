@@ -7,18 +7,12 @@ from PIL import Image
 import os
 
 
-# import data
-path='RAIN_DATASET_COMPRESSED/LABELLED'
-classes=['LABELLED_REAL_RAIN_INPUTS','LABELLED_CLEAR_INPUTS']
+results_folder='results4'
 
-results_folder='results2'
-
-dataset=ImageDataset(path,classes[0],classes[1])
-net=torch.load(os.path.join(results_folder,'net.pkl'),map_location=torch.device('cpu'))
 
 psnr=torch.load(os.path.join(results_folder,'images/0_psnr_scores.pkl'))
-P=np.array(list(psnr))
-print(P.mean(),P.med(),P.std(),len(P))
+P=np.array(list(psnr.values()))
+print(P.mean(),np.median(P),P.std(),len(P))
 psnr={k:v for k,v in sorted(psnr.items(),key=lambda x:x[1])}
 
 # open worst, median and best images
@@ -32,8 +26,8 @@ Image.open(os.path.join(results_folder,'images',im2)).show()
 Image.open(os.path.join(results_folder,'images',im3)).show()
 
 
-print(PSNR(out,data['clear']))
-imshow(data['rain'],out,data['clear'])
+#print(PSNR(out,data['clear']))
+#imshow(data['rain'],out,data['clear'])
 
 loss_train=torch.load(os.path.join(results_folder,'loss_train.pkl'))
 psnr_train=torch.load(os.path.join(results_folder,'psnr_train.pkl'))

@@ -7,16 +7,17 @@ from tqdm import tqdm
 
 # import data
 batch_size=1
+folder='results4'
 
 device='cuda' if torch.cuda.is_available() else 'cpu'
 print('Device:',device)
 
 path='RAIN_DATASET_COMPRESSED/LABELLED'
 classes=['LABELLED_REAL_RAIN_INPUTS','LABELLED_CLEAR_INPUTS']
-# path='RAIN_DATASET_2_COMPRESSED/test_b'
+# path='RAIN_DATASET_2_COMPRESSED/train'
 # classes=['data','gt']
 
-export_path='results3/images'
+export_path=os.path.join(folder,'images')
 if not os.path.exists(export_path):
     os.mkdir(export_path)
 
@@ -25,7 +26,7 @@ data_loader = torch.utils.data.DataLoader(
     batch_size=batch_size,
     shuffle=True)
 
-net=torch.load('results3/net.pkl',map_location=torch.device(device))
+net=torch.load(os.path.join(folder,'net.pkl'),map_location=torch.device(device))
 net.eval()
 
 psnr_dict={}
